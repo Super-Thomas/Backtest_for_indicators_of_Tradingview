@@ -9,7 +9,7 @@ warnings.filterwarnings('ignore')
 import talib as ta
 from Tradingview import Indicators
 
-# https://kr.tradingview.com/script/o50NYLAZ-AlphaTrend/
+# https://www.tradingview.com/script/o50NYLAZ-AlphaTrend/
 def AlphaTrend(df):
     at_df = df.copy()
     coeff = 1 #input.float(1, 'Multiplier', step=0.1)

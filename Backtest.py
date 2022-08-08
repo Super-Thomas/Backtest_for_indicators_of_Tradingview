@@ -8,6 +8,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import pyupbit
 from Tradingview import Alphatrend as at
+from Tradingview import SuperScalper as ss
 
 ########################################################################################################################
 # Setting values
@@ -78,6 +79,19 @@ def Backtest(ticker):
 
     print(f"[2] End for get data from AlphaTrend: {datetime.datetime.now()}")
 
+    print(f"[2] Start for get data from SuperScalper: {datetime.datetime.now()}")
+
+    ss_df = ss.SuperScalper(df)
+    #df['RSILong'] = ss_df['RSILong']
+    #df['RSIShort'] = ss_df['RSIShort']
+    #df['longCondition'] = ss_df['longCondition']
+    #df['shortCondition'] = ss_df['shortCondition']
+    df['resultSS'] = ss_df['result']
+    #df['stopLoss'] = ss_df['stopLoss']
+    #df['takeProfit'] = ss_df['takeProfit']
+
+    print(f"[2] End for get data from SuperScalper: {datetime.datetime.now()}")
+
     tradeNumber = []
     signal = []
     date = []
@@ -92,7 +106,8 @@ def Backtest(ticker):
     tradeNumberCount = 1
 
     for i in range(1, len(df)):
-        if df['buySignalk'].iloc[i - 1] == 1:
+        #if df['buySignalk'].iloc[i - 1] == 1: # For AlphaTrend
+        if df['resultSS'].iloc[i - 1] == 1: # For SuperScalper
             if positionFlag == 0:
                 if balance > 0:
                     tradeNumber.append(tradeNumberCount)
@@ -109,7 +124,8 @@ def Backtest(ticker):
                     totalAmount.append('')
                     positionFlag = 1
 
-        elif df['sellSignalk'].iloc[i - 1] == 1:
+        #elif df['sellSignalk'].iloc[i - 1] == 1: # For AlphaTrend
+        elif df['resultSS'].iloc[i - 1] == 2:  # For SuperScalper
             if positionFlag == 1:
                 tradeNumber.append(tradeNumberCount)
                 signal.append('SELL')

@@ -40,3 +40,14 @@ def MFI(df, length=14):
     mfi = 100 * (np.array(positive_mf) / (np.array(positive_mf) + np.array(negative_mf)))
 
     return mfi
+
+def crossover_series(x: pd.Series, y: pd.Series, cross_distance: int = None) -> pd.Series:
+    shift_value = 1 if not cross_distance else cross_distance
+    return (x > y) & (x.shift(shift_value) < y.shift(shift_value))
+
+def crossunder_series(x: pd.Series, y: pd.Series, cross_distance: int = None) -> pd.Series:
+    shift_value = 1 if not cross_distance else cross_distance
+    return (x < y) & (x.shift(shift_value) > y.shift(shift_value))
+
+def ma_function(source, atrlen):
+    return ta.WMA(source, atrlen)
